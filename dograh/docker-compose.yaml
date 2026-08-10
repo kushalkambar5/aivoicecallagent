@@ -99,10 +99,11 @@ services:
       SECRET_KEY: a6d0181136f1dc747cbd56f7c9c21acd7553530d451c657e2e86734bd51a9c5d
 
       # ── Public URL (used for webhooks & SIP callbacks) ──
-      # IMPORTANT: Set this to your machine's LAN IP or ngrok URL so VoBiz
-      # can reach Dograh for inbound call webhooks.
+      # IMPORTANT: Set this to your Cloudflare tunnel URL (or LAN IP) so
+      # external services can reach the API. The env var name MUST be
+      # PUBLIC_BASE_URL — not PUBLIC_URL — which is what the API code reads.
       # Example: http://192.168.1.10:8080
-      PUBLIC_URL: https://printing-priest-capacity-sleeps.trycloudflare.com
+      PUBLIC_BASE_URL: https://delegation-off-bases-lovers.trycloudflare.com
 
       # ── LLM — Groq ──
       # Set via environment or .env file
@@ -135,6 +136,10 @@ services:
     environment:
       # The dashboard calls the API through the browser, so use localhost
       NEXT_PUBLIC_API_URL: http://localhost:8080
+      # WebSocket connections must go directly to the API port (8080) —
+      # Next.js does not proxy WebSocket upgrades, so ws://localhost:3010
+      # would fail. Point the browser directly at the API server.
+      NEXT_PUBLIC_WS_URL: ws://localhost:8080
       BACKEND_URL: http://dograh-api:8000
       NODE_ENV: "oss"
       PORT: "3010"
