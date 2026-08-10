@@ -61,6 +61,25 @@ services:
       timeout: 5s
       retries: 5
 
+  # ── coturn — TURN/STUN relay for WebRTC (fixes Docker ICE failure) ──
+  coturn:
+    image: coturn/coturn:latest
+    container_name: dograh_coturn
+    restart: unless-stopped
+    network_mode: host
+    command:
+      - --lt-cred-mech
+      - --fingerprint
+      - --no-multicast-peers
+      - --no-cli
+      - --realm=dograh.local
+      - --secret=dograh_turn_secret
+      - --listening-port=3478
+      - --listening-ip=0.0.0.0
+      - --min-port=49152
+      - --max-port=65535
+      - --log-file=stdout
+
   # ── Dograh API ──────────────────────────────────────────────
   dograh-api:
     image: ghcr.io/dograh-hq/dograh-api:latest
@@ -73,6 +92,8 @@ services:
       redis:
         condition: service_healthy
       minio:
+        condition: service_started
+      coturn:
         condition: service_started
     ports:
       - "8080:8000"
@@ -103,7 +124,7 @@ services:
       # external services can reach the API. The env var name MUST be
       # PUBLIC_BASE_URL — not PUBLIC_URL — which is what the API code reads.
       # Example: http://192.168.1.10:8080
-      PUBLIC_BASE_URL: https://delegation-off-bases-lovers.trycloudflare.com
+      PUBLIC_BASE_URL: https://spa-spec-changelog-euro.trycloudflare.com
 
       # ── LLM — Groq ──
       # Set via environment or .env file
@@ -119,6 +140,15 @@ services:
       CUSTOM_TTS_BASE_URL: http://host.docker.internal:8002/v1
       CUSTOM_TTS_API_KEY: local
       CUSTOM_TTS_MODEL: FunAudioLLM/Fun-CosyVoice3-0.5B-2512
+
+      # ── TURN Server (coturn on host network) ──
+      # Enables WebRTC audio relay so the browser can reach the API container.
+      # coturn runs with network_mode: host, so localhost:3478 is reachable from
+      # both the browser and the Docker API container via host.docker.internal.
+      ENABLE_COTURN: "true"
+      TURN_HOST: localhost
+      TURN_PORT: "3478"
+      TURN_SECRET: dograh_turn_secret
 
     extra_hosts:
       - "host.docker.internal:host-gateway"

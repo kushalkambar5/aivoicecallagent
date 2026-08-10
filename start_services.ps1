@@ -111,7 +111,7 @@ Write-Host "   MinIO        ->  http://localhost:9001" -ForegroundColor White
 Write-Host ""
 Write-Host " Cloudflare Tunnel:" -ForegroundColor Magenta
 Write-Host "   Check the 'Cloudflare Tunnel' window for your public URL." -ForegroundColor Magenta
-Write-Host "   Copy it and update PUBLIC_URL in .env + docker-compose.yaml" -ForegroundColor Magenta
+Write-Host "   Copy it and update PUBLIC_BASE_URL in docker-compose.yaml (dograh-api section)" -ForegroundColor Magenta
 Write-Host ""
 Write-Host " Model load times (first startup):" -ForegroundColor Gray
 Write-Host "   STT (Qwen3-ASR-1.7B):   ~60-120s on CPU, ~15s on GPU" -ForegroundColor Gray
