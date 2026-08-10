@@ -129,7 +129,7 @@ async def list_voices():
     """List available built-in voices (non-standard but helpful for debugging)."""
     if cosyvoice is None:
         raise HTTPException(status_code=503, detail="Model not loaded.")
-    return {"voices": cosyvoice.list_avaliable_spks(), "voice_map": VOICE_MAP}
+    return {"voices": cosyvoice.list_available_spks(), "voice_map": VOICE_MAP}
 
 
 @app.post("/v1/audio/speech")
