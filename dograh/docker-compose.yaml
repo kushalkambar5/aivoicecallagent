@@ -96,7 +96,7 @@ services:
       ENVIRONMENT: production
 
       # ── Secret (change this!) ──
-      SECRET_KEY: change-this-to-a-long-random-secret-32chars
+      SECRET_KEY: a6d0181136f1dc747cbd56f7c9c21acd7553530d451c657e2e86734bd51a9c5d
 
       # ── Public URL (used for webhooks & SIP callbacks) ──
       # IMPORTANT: Set this to your machine's LAN IP or ngrok URL so VoBiz
@@ -154,7 +154,7 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://dograh:dograh_secret@postgres:5432/dograh
       REDIS_URL: redis://redis:6379
-      SECRET_KEY: change-this-to-a-long-random-secret-32chars
+      SECRET_KEY: a6d0181136f1dc747cbd56f7c9c21acd7553530d451c657e2e86734bd51a9c5d
       GROQ_API_KEY: ${GROQ_API_KEY:-}
     extra_hosts:
       - "host.docker.internal:host-gateway"

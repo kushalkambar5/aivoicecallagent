@@ -1,0 +1,6 @@
+{
+  "extraPaths": [
+    "services/tts_server/CosyVoice",
+    "services/tts_server/CosyVoice/third_party/Matcha-TTS"
+  ]
+}

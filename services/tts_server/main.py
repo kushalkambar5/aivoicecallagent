@@ -42,6 +42,8 @@ MODEL_PATH = BASE_DIR / "models" / "Fun-CosyVoice3-0.5B-2512"
 COSYVOICE_REPO = Path(__file__).parent / "CosyVoice"
 if COSYVOICE_REPO.exists():
     sys.path.insert(0, str(COSYVOICE_REPO))
+    sys.path.insert(0, str(COSYVOICE_REPO / "third_party" / "Matcha-TTS"))
+
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
 app = FastAPI(

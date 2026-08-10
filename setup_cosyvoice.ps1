@@ -45,11 +45,24 @@ Write-Host "      [+] TTS server requirements installed." -ForegroundColor Green
 
 # 4. Install STT server requirements
 Write-Host ""
-Write-Host "[4/4] Installing STT server requirements..." -ForegroundColor Yellow
+Write-Host "[4/5] Installing STT server requirements..." -ForegroundColor Yellow
 pip install -r "$PSScriptRoot\services\stt_server\requirements.txt" --no-warn-script-location
 Write-Host "      [+] STT server requirements installed." -ForegroundColor Green
+
+# 5. Link CosyVoice repository to Python site-packages
+Write-Host ""
+Write-Host "[5/5] Linking CosyVoice to Python site-packages..." -ForegroundColor Yellow
+$SitePackages = python -c "import site; print(site.getsitepackages()[-1])" 2>$null
+if ($SitePackages -and (Test-Path $SitePackages)) {
+    $PthContent = "$CosyVoiceDir`n$CosyVoiceDir\third_party\Matcha-TTS"
+    Set-Content -Path "$SitePackages\cosyvoice.pth" -Value $PthContent
+    Write-Host "      [+] Added cosyvoice.pth to $SitePackages" -ForegroundColor Green
+} else {
+    Write-Host "      [!] Could not locate site-packages path to write cosyvoice.pth" -ForegroundColor Yellow
+}
 
 Write-Host ""
 Write-Host "==================================================" -ForegroundColor Green
 Write-Host " Setup complete! You can now run start_services.ps1" -ForegroundColor Green
 Write-Host "==================================================" -ForegroundColor Green
+
