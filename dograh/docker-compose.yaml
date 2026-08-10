@@ -75,7 +75,7 @@ services:
       minio:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "8080:8000"
     environment:
       # ── Database ──
       DATABASE_URL: postgresql+asyncpg://dograh:dograh_secret@postgres:5432/dograh
@@ -92,7 +92,7 @@ services:
 
       # ── Application ──
       API_HOST: 0.0.0.0
-      API_PORT: "8080"
+      API_PORT: "8000"
       ENVIRONMENT: production
 
       # ── Secret (change this!) ──
@@ -135,6 +135,8 @@ services:
     environment:
       # The dashboard calls the API through the browser, so use localhost
       NEXT_PUBLIC_API_URL: http://localhost:8080
+      BACKEND_URL: http://dograh-api:8000
+      NODE_ENV: "oss"
       PORT: "3010"
 
   # ── Dograh Worker (background jobs) ────────────────────────
