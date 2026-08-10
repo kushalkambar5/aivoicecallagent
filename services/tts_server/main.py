@@ -76,9 +76,9 @@ async def load_model():
 
     try:
         from cosyvoice.cli.cosyvoice import CosyVoice3
-        cosyvoice = CosyVoice3(str(MODEL_PATH), load_jit=False, load_trt=False, fp16=False)
+        cosyvoice = CosyVoice3(str(MODEL_PATH), load_trt=False, fp16=False)
         log.info("Model loaded in %.1f s", time.time() - t0)
-        spks = cosyvoice.list_avaliable_spks()
+        spks = cosyvoice.list_available_spks()
         log.info("Available built-in speakers: %s", spks)
     except ImportError as exc:
         log.error(

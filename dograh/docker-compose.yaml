@@ -78,7 +78,7 @@ services:
       - "8080:8080"
     environment:
       # ── Database ──
-      DATABASE_URL: postgresql://dograh:dograh_secret@postgres:5432/dograh
+      DATABASE_URL: postgresql+asyncpg://dograh:dograh_secret@postgres:5432/dograh
 
       # ── Redis ──
       REDIS_URL: redis://redis:6379
@@ -143,14 +143,14 @@ services:
     container_name: dograh_worker
     restart: unless-stopped
     pull_policy: always
-    command: ["python", "-m", "arq", "app.worker.WorkerSettings"]
+    command: ["python", "-m", "arq", "api.tasks.arq.WorkerSettings"]
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://dograh:dograh_secret@postgres:5432/dograh
+      DATABASE_URL: postgresql+asyncpg://dograh:dograh_secret@postgres:5432/dograh
       REDIS_URL: redis://redis:6379
       SECRET_KEY: change-this-to-a-long-random-secret-32chars
       GROQ_API_KEY: ${GROQ_API_KEY:-}

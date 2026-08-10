@@ -54,7 +54,7 @@ Write-Host "[1/3] Starting STT Server (Qwen3-ASR-1.7B) on port 8001..." -Foregro
 Start-ServiceWindow `
     -Title "STT Server - Qwen3-ASR-1.7B :8001" `
     -WorkingDir "$Root\services\stt_server" `
-    -Command "uvicorn main:app --host 0.0.0.0 --port 8001 --log-level info" `
+    -Command "& '$Root\.venv\Scripts\uvicorn.exe' main:app --host 0.0.0.0 --port 8001 --log-level info" `
     -Color "DarkBlue"
 
 Start-Sleep -Seconds 2
@@ -63,12 +63,12 @@ Start-Sleep -Seconds 2
 Write-Host "[2/3] Starting TTS Server (CosyVoice3) on port 8002..." -ForegroundColor Yellow
 # Add CosyVoice to PYTHONPATH so it's importable
 $CosyVoicePath = "$Root\services\tts_server\CosyVoice"
-$env:PYTHONPATH = "$CosyVoicePath;$env:PYTHONPATH"
+$env:PYTHONPATH = "$CosyVoicePath;$CosyVoicePath\third_party\Matcha-TTS;$env:PYTHONPATH"
 
 Start-ServiceWindow `
     -Title "TTS Server - CosyVoice3 :8002" `
     -WorkingDir "$Root\services\tts_server" `
-    -Command "`$env:PYTHONPATH = '$CosyVoicePath;' + `$env:PYTHONPATH; uvicorn main:app --host 0.0.0.0 --port 8002 --log-level info" `
+    -Command "`$env:OPENBLAS_NUM_THREADS = '1'; `$env:PYTHONPATH = '$CosyVoicePath;$CosyVoicePath\third_party\Matcha-TTS;' + `$env:PYTHONPATH; & '$Root\.venv\Scripts\uvicorn.exe' main:app --host 0.0.0.0 --port 8002 --log-level info" `
     -Color "DarkGreen"
 
 Start-Sleep -Seconds 2
